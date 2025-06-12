@@ -1,7 +1,38 @@
-import React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import SignIn from "../pages/SignIn";
+import NotFound from "../pages/NotFound";
+import PrivateRouter from "./PrivateRouter";
 
-const Router = () => {
-  return <div>Router</div>;
-};
+const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Login/>,
+  },
+  {
+    path: "/register",
+    element: <Register/>,
+  },
+   {
+    path: "/",
+    element: <Layout/>,
+  },
+  {
+    path:"/",
+    element: <PrivateRouter/>,  //! Yetki kontrolü - Giriş kontrolü
+    children:[
+          {
+            path:"details/:id",
+            element: <Details/>
+          },
+    ]
+  }
+]);
 
-export default Router;
+export default function AppRouter() {
+  return <RouterProvider router={router} />;
+}
