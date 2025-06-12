@@ -1,6 +1,4 @@
-// src/App.jsx
-import './App.css';
-import Navbar from './components/Navbar';
+import Navbar from "./components/Navbar";
 import Router from "./router/Router";
 
 function App() {
@@ -12,3 +10,4 @@ function App() {
   );
 }
 
+export default App;

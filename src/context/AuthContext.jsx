@@ -1,54 +1,56 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../auth/firebase'; // Import the auth instance
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import React, {createContext} from 'react'
+import {auth} from '../auth/firebase';
+import { toast } from 'react-toastify';
 
-const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Optional: for handling initial loading state
+export  const AuthContextt = createContext();
 
-  // Sign up with email and password
-  const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
 
-  // Login with email and password
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
+const AuthContext = ({ children }) => {
+const navigate = useNavigate();
 
-  // Logout
-  const logout = () => {
-    return signOut(auth);
-  };
+const createKullanici=async(email, password, displayName) => {
+  await createUserWithEmailAndPassword(auth, email, password)
 
-  // Listen for auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false); // Set loading to false after auth state is determined
-    });
+  toastSuccess("Kullanıcı başarıyla oluşturuldu")
 
-    // Clean up the listener when the component unmounts
-    return unsubscribe;
-  }, []);
+navigate("/")
 
-  const value = {
-    currentUser,
-    signup,
-    login,
-    logout,
-  };
+//! Login
+const giris=async(email, password) => {
+  await signInWithEmailAndPassword(auth, email, password)
+
+  toastSuccess("Giriş başarılı")
+
+  navigate("/")
+}
+
+
+//! Google ile giriş
+const googleGiris = async () => {
+
+//! Google Hesaplarımıza erişme metodu
+  const provider = new GoogleAuthProvider();
+
+  //! Açılır perspektif ile giriş yapma
+  signInWithPopup(auth, provider);
+.then((result) => {
+  
+  toastSuccess("Google ile giriş başarılı");
+
+  navigate("/");
+
+})
+.catch((error) => {
+  toast.error("Google ile giriş başarısız: " + error.message);
+});
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children} {/* Render children only after loading is complete */}
+    <AuthContext.Provider value={{createKullanici, giris, googleGiris}}>
+    {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-// Custom hook to use the auth context
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export default AuthContext
