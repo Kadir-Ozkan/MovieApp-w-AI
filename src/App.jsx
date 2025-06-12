@@ -6,6 +6,7 @@ function App() {
   return (
     <RecipeProvider>
       <Navbar />
+      <div>Testing visibility</div>
       <AppRouter />
     </RecipeProvider>
   );
