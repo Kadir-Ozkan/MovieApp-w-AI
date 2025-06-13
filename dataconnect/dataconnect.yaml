@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "movieapp-w-ai"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "movieapp-w-ai-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

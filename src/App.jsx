@@ -1,11 +1,10 @@
-import "./App.css";
-import Navbar from "./components/Navbar";
+  // src/App.jsx
+  import "./App.css";
 import AppRouter from "./router/AppRouter";
 
 function App() {
   return (
     <RecipeProvider>
-      <Navbar />
       <div>Testing visibility</div>
       <AppRouter />
     </RecipeProvider>

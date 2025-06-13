@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-
+import "./App.css"
 import App from "./App.jsx";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
